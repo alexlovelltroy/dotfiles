@@ -1,5 +1,5 @@
 .PHONY: all
-all: bin dotfiles etc ## Installs the bin and etc directory files and the dotfiles.
+all: bin dotfiles  ## Installs the bin directory files and the dotfiles.
 
 .PHONY: bin
 bin: ## Installs the bin directory files.
@@ -32,16 +32,6 @@ dotfiles: ## Installs the dotfiles.
 	mkdir -p $(HOME)/Pictures;
 	ln -snf $(CURDIR)/central-park.jpg $(HOME)/Pictures/central-park.jpg;
 
-.PHONY: etc
-etc: ## Installs the etc directory files.
-	sudo mkdir -p /etc/docker/seccomp
-	for file in $(shell find $(CURDIR)/etc -type f -not -name ".*.swp"); do \
-		f=$$(echo $$file | sed -e 's|$(CURDIR)||'); \
-		sudo mkdir -p $$(dirname $$f); \
-		sudo ln -f $$file $$f; \
-	done
-	systemctl --user daemon-reload || true
-	sudo systemctl daemon-reload
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.
